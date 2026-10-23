@@ -1,0 +1,31 @@
+fullnameOverride: kube-prometheus-stack
+defaultRules:
+  create: true
+alertmanager:
+  alertmanagerSpec:
+    secrets:
+      - alertmanager-slack-webhook
+grafana:
+  admin:
+    existingSecret: grafana-admin
+    userKey: admin-user
+    passwordKey: admin-password
+  sidecar:
+    dashboards:
+      enabled: true
+      label: grafana_dashboard
+      searchNamespace: ALL
+prometheus:
+  prometheusSpec:
+    retention: 7d
+    retentionSize: 8GiB
+    podMonitorSelectorNilUsesHelmValues: false
+    serviceMonitorSelectorNilUsesHelmValues: false
+    ruleSelectorNilUsesHelmValues: false
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: "1"
+        memory: 1Gi

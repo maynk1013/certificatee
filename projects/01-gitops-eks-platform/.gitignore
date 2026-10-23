@@ -1,0 +1,10 @@
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+!*.tfvars.example
+.env
+kubeconfig
+*.pem
+.pytest_cache/
+__pycache__/

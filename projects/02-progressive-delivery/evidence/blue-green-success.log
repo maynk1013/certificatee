@@ -1,0 +1,7 @@
+strategy=blue-green
+status=promoted
+active_version=v2
+candidate_version=v2
+weight_on_candidate=100
+1. step=deploy-preview active=v1 candidate=v2 weight=0 decision=hold detail=active service still points at v1
+2. step=switch-active-service active=v2 candidate=v2 weight=100 decision=promote detail=active service selector moved to the preview version

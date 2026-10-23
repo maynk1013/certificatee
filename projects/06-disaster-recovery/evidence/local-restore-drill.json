@@ -1,0 +1,7 @@
+{
+  "ok": true,
+  "sha256": "cba4616a9c30d9f9394ff46062aed922e27fe101cd097b6eb29469aa1f3202af",
+  "local_restore_seconds": 0.0005051250009273645,
+  "label": "local synthetic restore elapsed time, not an AWS RTO measurement",
+  "cross_region_tested": false
+}

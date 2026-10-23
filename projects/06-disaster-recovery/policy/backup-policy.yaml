@@ -1,0 +1,31 @@
+version: 1
+targets:
+  application_data:
+    method: local snapshot with sha256, or AWS Backup for supported resources after approval
+    frequency: daily
+    retention_days: 35
+  database:
+    method: AWS Backup or RDS automated backup after approval
+    frequency: daily
+    retention_days: 35
+  kubernetes_manifests:
+    method: git
+    frequency: every commit
+    retention: repository history
+  configuration:
+    method: git
+    frequency: every commit
+    retention: repository history
+objectives:
+  rpo_target: 24h
+  rto_target: 4h
+  note: These are design targets. They are not measured recovery results.
+cross_region:
+  enabled: false
+  reason: Cross-region copy is not configured and has not been tested.
+approval:
+  required_before:
+    - create
+    - restore
+    - overwrite
+    - delete

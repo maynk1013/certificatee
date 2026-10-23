@@ -1,0 +1,3 @@
+strategy: canary
+candidateVersion: "2.0.0"
+simulateFailure: false

@@ -1,0 +1,3 @@
+DemoWebHighErrorRate severity=warning summary=5xx ratio is above the example threshold
+DemoWebHighLatency severity=warning summary=average latency is above the example threshold
+NodeCpuPressure severity=warning summary=CPU ratio is above the example threshold

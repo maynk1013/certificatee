@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: secrets-demo
+  namespace: demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: secrets-demo
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: secrets-demo
+    spec:
+      automountServiceAccountToken: false
+      serviceAccountName: secrets-demo
+      containers:
+        - name: secrets-demo
+          image: REPLACE_WITH_REGISTRY/secrets-demo:1.0.0
+          env:
+            - name: DEMO_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: demo-app
+                  key: value
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: http
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: secrets-demo
+  namespace: demo
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::000000000000:role/REPLACE_WITH_ROLE
+automountServiceAccountToken: false
