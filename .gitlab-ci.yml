@@ -1,0 +1,53 @@
+stages:
+  - test
+  - validate
+
+python-tests:
+  stage: test
+  image: python:3.12.11-slim
+  script:
+    - pip install --disable-pip-version-check -r requirements-dev.txt
+    - pytest -q
+    - python tools/secret_scan.py
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH'
+
+terraform-validate:
+  stage: validate
+  image:
+    name: hashicorp/terraform:1.14.7
+    entrypoint: [""]
+  script:
+    - terraform fmt -check -recursive projects
+    - |
+      set -eu
+      for dir in \
+        projects/01-gitops-eks-platform/terraform/envs/dev \
+        projects/03-terraform-multi-environment/envs/dev \
+        projects/03-terraform-multi-environment/envs/staging \
+        projects/03-terraform-multi-environment/envs/prod \
+        projects/06-disaster-recovery/terraform \
+        projects/07-secrets-management/terraform
+      do
+        terraform -chdir="$dir" init -backend=false -input=false
+        terraform -chdir="$dir" validate
+      done
+    - terraform -chdir=projects/03-terraform-multi-environment/tests/fixtures/invalid-syntax init -backend=false -input=false
+    - |
+      if terraform -chdir=projects/03-terraform-multi-environment/tests/fixtures/invalid-syntax validate; then
+        echo "invalid fixture was accepted"
+        exit 1
+      fi
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH'
+
+helm-lint:
+  stage: validate
+  image:
+    name: alpine/helm:3.16.4
+    entrypoint: [""]
+  script:
+    - helm lint projects/01-gitops-eks-platform/helm/demo-web
+    - helm lint projects/02-progressive-delivery/helm/demo-rollout
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH'

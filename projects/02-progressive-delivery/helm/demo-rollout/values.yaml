@@ -1,0 +1,27 @@
+strategy: canary
+stableVersion: "1.0.0"
+candidateVersion: "2.0.0"
+image:
+  repository: REPLACE_WITH_REGISTRY/demo-web
+  pullPolicy: IfNotPresent
+service:
+  port: 80
+  targetPort: 8080
+canary:
+  weights: [10, 30, 50, 100]
+  pauseSeconds: 60
+  errorThreshold: 0.05
+  failureLimit: 1
+blueGreen:
+  autoPromotionEnabled: false
+  scaleDownDelaySeconds: 30
+analysis:
+  prometheusAddress: http://kube-prometheus-stack-prometheus.monitoring.svc:9090
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    cpu: 250m
+    memory: 128Mi
+simulateFailure: false

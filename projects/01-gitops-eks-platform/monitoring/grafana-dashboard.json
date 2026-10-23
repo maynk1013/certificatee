@@ -1,0 +1,69 @@
+{
+  "uid": "demo-web-health",
+  "title": "Demo web and cluster health",
+  "tags": ["demo-web", "portfolio"],
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "version": 1,
+  "refresh": "30s",
+  "panels": [
+    {
+      "id": 1,
+      "type": "stat",
+      "title": "Target up",
+      "gridPos": {"h": 4, "w": 6, "x": 0, "y": 0},
+      "targets": [
+        {"refId": "A", "expr": "max(up{job=~\".*demo-web.*\"})"}
+      ]
+    },
+    {
+      "id": 2,
+      "type": "timeseries",
+      "title": "Request rate",
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 4},
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum by (status) (rate(demo_http_requests_total[5m]))",
+          "legendFormat": "{{status}}"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "timeseries",
+      "title": "Error ratio",
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 4},
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum(rate(demo_http_requests_total{status=~\"5..\"}[5m])) / clamp_min(sum(rate(demo_http_requests_total[5m])), 0.001)"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "timeseries",
+      "title": "Average latency",
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 12},
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum(rate(demo_http_request_duration_seconds_sum[5m])) / clamp_min(sum(rate(demo_http_request_duration_seconds_count[5m])), 0.001)"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "type": "timeseries",
+      "title": "Node CPU",
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 12},
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "1 - avg(rate(node_cpu_seconds_total{mode=\"idle\"}[5m]))"
+        }
+      ]
+    }
+  ]
+}

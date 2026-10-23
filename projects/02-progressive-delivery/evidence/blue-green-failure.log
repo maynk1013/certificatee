@@ -1,0 +1,7 @@
+strategy=blue-green
+status=rolled_back
+active_version=v1
+candidate_version=v2
+weight_on_candidate=0
+1. step=deploy-preview active=v1 candidate=v2 weight=0 decision=hold detail=active service still points at v1
+2. step=pre-promotion-analysis active=v1 candidate=v2 weight=0 decision=rollback detail=ready=False error_rate=0.8000

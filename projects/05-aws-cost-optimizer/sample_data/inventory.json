@@ -1,0 +1,29 @@
+{
+  "instances": [
+    {"id": "i-idle", "region": "ap-south-1", "state": "running", "instance_type": "t3.micro"},
+    {"id": "i-busy", "region": "ap-south-1", "state": "running", "instance_type": "t3.micro"},
+    {"id": "i-unknown", "region": "ap-south-1", "state": "running", "instance_type": "t3.micro"},
+    {"id": "i-stopped", "region": "ap-south-1", "state": "stopped", "instance_type": "t3.micro"}
+  ],
+  "cpu_averages": {
+    "i-idle": 1.2,
+    "i-busy": 42.0,
+    "i-unknown": null
+  },
+  "volumes": [
+    {"id": "vol-free", "region": "ap-south-1", "attachments": [], "size_gib": 20},
+    {"id": "vol-used", "region": "ap-south-1", "attachments": ["i-busy"], "size_gib": 20}
+  ],
+  "addresses": [
+    {"allocation_id": "eipalloc-free", "region": "ap-south-1"},
+    {"allocation_id": "eipalloc-used", "region": "ap-south-1", "instance_id": "i-busy"}
+  ],
+  "resources": [
+    {
+      "id": "i-idle",
+      "resource_type": "ec2-instance",
+      "region": "ap-south-1",
+      "tags": {"Project": "devops-portfolio", "Environment": "qa", "Owner": ""}
+    }
+  ]
+}

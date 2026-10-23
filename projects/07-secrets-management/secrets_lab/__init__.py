@@ -1,0 +1,1 @@
+"""Local secrets workflow."""

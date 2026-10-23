@@ -1,0 +1,6 @@
+bucket       = "REPLACE_WITH_PRIVATE_STATE_BUCKET"
+key          = "multi-env/ENV_NAME/terraform.tfstate"
+region       = "ap-south-1"
+encrypt      = true
+use_lockfile = true
+kms_key_id   = ""

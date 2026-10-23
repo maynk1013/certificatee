@@ -1,0 +1,41 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: observability-demo
+  namespace: monitoring
+spec:
+  groups:
+    - name: observability-demo
+      rules:
+        - alert: DemoWebHighErrorRate
+          expr: |
+            sum(rate(demo_http_requests_total{status=~"5.."}[5m]))
+            /
+            clamp_min(sum(rate(demo_http_requests_total[5m])), 0.001)
+            > 0.05
+          for: 10m
+          labels:
+            severity: warning
+          annotations:
+            summary: Example error-ratio alert
+            runbook: projects/04-observability-platform/runbooks/high-error-rate.md
+        - alert: DemoWebHighLatency
+          expr: |
+            sum(rate(demo_http_request_duration_seconds_sum[5m]))
+            /
+            clamp_min(sum(rate(demo_http_request_duration_seconds_count[5m])), 0.001)
+            > 0.5
+          for: 10m
+          labels:
+            severity: warning
+          annotations:
+            summary: Example average-latency alert
+            runbook: projects/04-observability-platform/runbooks/high-latency.md
+        - alert: NodeCpuPressure
+          expr: 1 - avg(rate(node_cpu_seconds_total{mode="idle"}[5m])) > 0.8
+          for: 15m
+          labels:
+            severity: warning
+          annotations:
+            summary: Example CPU pressure alert
+            runbook: projects/04-observability-platform/runbooks/resource-pressure.md

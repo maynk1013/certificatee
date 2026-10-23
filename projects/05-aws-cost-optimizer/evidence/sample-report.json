@@ -1,0 +1,58 @@
+{
+  "dry_run": true,
+  "finding_count": 5,
+  "errors": [],
+  "findings": [
+    {
+      "resource_id": "i-idle",
+      "resource_type": "ec2-instance",
+      "region": "ap-south-1",
+      "reason": "average CPU 1.20 is below threshold 5.00",
+      "recommended_action": "review the workload, then stop it only through the opt-in remediation command",
+      "estimated_monthly_savings_usd": null,
+      "estimate_basis": "pricing catalog was not supplied; no savings figure is shown",
+      "estimate_label": "not_estimated"
+    },
+    {
+      "resource_id": "i-unknown",
+      "resource_type": "ec2-instance",
+      "region": "ap-south-1",
+      "reason": "CPU average is missing for the lookback window",
+      "recommended_action": "collect more CloudWatch data before treating this instance as idle",
+      "estimated_monthly_savings_usd": null,
+      "estimate_basis": "insufficient data; no savings figure",
+      "estimate_label": "not_estimated"
+    },
+    {
+      "resource_id": "vol-free",
+      "resource_type": "ebs-volume",
+      "region": "ap-south-1",
+      "reason": "volume status is available and it has no attachments",
+      "recommended_action": "snapshot it if the data matters, then delete it only after approval",
+      "estimated_monthly_savings_usd": null,
+      "estimate_basis": "pricing catalog was not supplied; no savings figure is shown",
+      "estimate_label": "not_estimated"
+    },
+    {
+      "resource_id": "eipalloc-free",
+      "resource_type": "elastic-ip",
+      "region": "ap-south-1",
+      "reason": "Elastic IP is not associated with an instance or network interface",
+      "recommended_action": "release it only after confirming no failover runbook needs it",
+      "estimated_monthly_savings_usd": null,
+      "estimate_basis": "pricing catalog was not supplied; no savings figure is shown",
+      "estimate_label": "not_estimated"
+    },
+    {
+      "resource_id": "i-idle",
+      "resource_type": "ec2-instance",
+      "region": "ap-south-1",
+      "reason": "missing tags: Owner; Environment tag 'qa' is outside dev, staging, prod",
+      "recommended_action": "add Project, Environment, and Owner tags before using the resource in a cost report",
+      "estimated_monthly_savings_usd": null,
+      "estimate_basis": "tag findings do not include a savings estimate",
+      "estimate_label": "not_estimated"
+    }
+  ],
+  "note": "Savings values are estimates only when a price catalog was supplied."
+}

@@ -1,0 +1,6 @@
+strategy: blueGreen
+candidateVersion: "2.0.0"
+blueGreen:
+  autoPromotionEnabled: false
+  scaleDownDelaySeconds: 30
+simulateFailure: false

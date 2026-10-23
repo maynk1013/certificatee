@@ -1,0 +1,42 @@
+{
+  "uid": "golden-signals-demo",
+  "title": "Demo service golden signals",
+  "tags": ["observability", "portfolio"],
+  "schemaVersion": 39,
+  "version": 1,
+  "panels": [
+    {
+      "id": 1,
+      "type": "timeseries",
+      "title": "Request rate",
+      "targets": [{"refId": "A", "expr": "sum by (status) (rate(demo_http_requests_total[5m]))"}]
+    },
+    {
+      "id": 2,
+      "type": "timeseries",
+      "title": "Error ratio",
+      "targets": [{"refId": "A", "expr": "sum(rate(demo_http_requests_total{status=~\"5..\"}[5m])) / clamp_min(sum(rate(demo_http_requests_total[5m])), 0.001)"}]
+    },
+    {
+      "id": 3,
+      "type": "timeseries",
+      "title": "Average latency",
+      "targets": [{"refId": "A", "expr": "sum(rate(demo_http_request_duration_seconds_sum[5m])) / clamp_min(sum(rate(demo_http_request_duration_seconds_count[5m])), 0.001)"}]
+    },
+    {
+      "id": 4,
+      "type": "timeseries",
+      "title": "CPU and memory",
+      "targets": [
+        {"refId": "A", "expr": "1 - avg(rate(node_cpu_seconds_total{mode=\"idle\"}[5m]))"},
+        {"refId": "B", "expr": "1 - (sum(node_memory_MemAvailable_bytes) / sum(node_memory_MemTotal_bytes))"}
+      ]
+    },
+    {
+      "id": 5,
+      "type": "stat",
+      "title": "Application health",
+      "targets": [{"refId": "A", "expr": "max(up{job=~\".*demo-web.*\"})"}]
+    }
+  ]
+}

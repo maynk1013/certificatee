@@ -1,0 +1,9 @@
+strategy=canary
+status=promoted
+active_version=v2
+candidate_version=v2
+weight_on_candidate=100
+1. step=setWeight:10 active=v1 candidate=v2 weight=10 decision=continue detail=error_rate=0.0000
+2. step=setWeight:30 active=v1 candidate=v2 weight=30 decision=continue detail=error_rate=0.0100
+3. step=setWeight:50 active=v1 candidate=v2 weight=50 decision=continue detail=error_rate=0.0000
+4. step=setWeight:100 active=v2 candidate=v2 weight=100 decision=continue detail=error_rate=0.0000

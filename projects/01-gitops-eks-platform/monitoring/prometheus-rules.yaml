@@ -1,0 +1,50 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: demo-web
+  namespace: monitoring
+  labels:
+    release: kube-prometheus-stack
+    grafana_dashboard: "0"
+spec:
+  groups:
+    - name: demo-web.rules
+      rules:
+        - alert: DemoWebHighErrorRate
+          expr: |
+            (
+              sum(rate(demo_http_requests_total{status=~"5.."}[5m]))
+              /
+              clamp_min(sum(rate(demo_http_requests_total[5m])), 0.001)
+            ) > 0.05
+          for: 10m
+          labels:
+            severity: warning
+            service: demo-web
+          annotations:
+            summary: Demo web 5xx ratio is above 5 percent
+            description: Check application logs and the latest Git commit reconciled by Argo CD.
+            runbook: projects/01-gitops-eks-platform/README.md
+        - alert: DemoWebHighLatency
+          expr: |
+            (
+              sum(rate(demo_http_request_duration_seconds_sum[5m]))
+              /
+              clamp_min(sum(rate(demo_http_request_duration_seconds_count[5m])), 0.001)
+            ) > 0.5
+          for: 10m
+          labels:
+            severity: warning
+            service: demo-web
+          annotations:
+            summary: Demo web average latency is above 0.5 seconds
+            description: This uses a counter sum and count. It is an average, not a histogram quantile.
+        - alert: DemoWebTargetDown
+          expr: up{job=~".*demo-web.*"} == 0
+          for: 5m
+          labels:
+            severity: critical
+            service: demo-web
+          annotations:
+            summary: Demo web metrics target is down
+            description: Prometheus cannot scrape the service.

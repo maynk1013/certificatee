@@ -1,0 +1,9 @@
+strategy=canary
+status=rolled_back
+active_version=v1
+candidate_version=v2
+weight_on_candidate=0
+1. step=setWeight:10 active=v1 candidate=v2 weight=10 decision=continue detail=error_rate=0.0100
+2. step=analysis:30 active=v1 candidate=v2 weight=30 decision=fail detail=ready=True error_rate=0.4000 failures=1
+3. step=analysis:50 active=v1 candidate=v2 weight=50 decision=fail detail=ready=True error_rate=0.5000 failures=2
+4. step=rollback active=v1 candidate=v2 weight=0 decision=rollback detail=failure limit reached; candidate receives no traffic

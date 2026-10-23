@@ -1,0 +1,38 @@
+# Example image job. The repository pipeline is the root .gitlab-ci.yml.
+# This file is not included automatically.
+
+stages:
+  - test
+  - package
+
+demo-web-test:
+  stage: test
+  image: python:3.12.11-slim
+  script:
+    - pip install --disable-pip-version-check pytest==8.4.2 pyyaml==6.0.3
+    - pytest projects/01-gitops-eks-platform/app/tests -q
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH'
+      changes:
+        - projects/01-gitops-eks-platform/**/*
+
+demo-web-image:
+  stage: package
+  image: docker:27.4.1
+  services:
+    - docker:27.4.1-dind
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+  script:
+    - docker build -t "$CI_REGISTRY_IMAGE/demo-web:$CI_COMMIT_SHA" projects/01-gitops-eks-platform/app
+    - |
+      if [ -n "${CI_REGISTRY:-}" ] && [ -n "${CI_REGISTRY_USER:-}" ] && [ -n "${CI_REGISTRY_PASSWORD:-}" ]; then
+        echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
+        docker push "$CI_REGISTRY_IMAGE/demo-web:$CI_COMMIT_SHA"
+      else
+        echo "Registry credentials are not set. Image was built in this job only if the runner allows it, and it was not pushed."
+      fi
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: manual
+      allow_failure: true

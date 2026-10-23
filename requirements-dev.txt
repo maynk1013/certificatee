@@ -1,0 +1,4 @@
+pytest==8.4.2
+PyYAML==6.0.3
+boto3==1.40.46
+reportlab==4.4.4
