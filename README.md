@@ -76,7 +76,7 @@ Run on 23 October 2026 from this repository root on macOS, with Terraform 1.14.7
 | `helm lint` on both charts | 0 charts failed. Helm printed an info note that an icon is recommended |
 | resume PDF render | 1 page, text is stored as PDF text operators |
 
-Not run on this machine, so not claimed: Docker build, Trivy image scan, kind or k3d, Checkov, a live Argo CD sync, Grafana or Loki install, Slack delivery, and any `terraform apply`. GitHub Actions and GitLab CI files are present and were not executed here. The local restore drill recorded about 0.0005 seconds for a synthetic file copy. That is not an AWS recovery time. The sample cost report has 5 findings and no savings figure.
+Not run on this machine, so not claimed: Docker build, Trivy image scan, kind or k3d, Checkov, a live Argo CD sync, Grafana or Loki install, Slack delivery, and any `terraform apply`. GitLab CI is in `.gitlab-ci.yml`. The GitHub Actions workflow is saved at `docs/ci/github-actions-ci.yml` because the token used to publish this repo could not create `.github/workflows`. Neither CI system was executed here. The local restore drill recorded about 0.0005 seconds for a synthetic file copy. That is not an AWS recovery time. The sample cost report has 5 findings and no savings figure.
 
 ## Limits
 

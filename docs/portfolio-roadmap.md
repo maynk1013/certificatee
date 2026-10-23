@@ -19,7 +19,7 @@ These ranges are planning estimates for a beginner repeating the work. They are 
 1. Run `scripts/validate-all.sh` from the repository root.
 2. Read the root README and remove any sentence you cannot demonstrate.
 3. Confirm `git status` does not show `.env`, `*.tfstate`, or a kubeconfig.
-4. Push to the repository you intend to show. This portfolio's remote is `https://github.com/maynk1013/certificatee.git`.
+4. Push to the repository you intend to show. This portfolio's remote is `https://github.com/maynk1013/certificatee.git`. If GitHub rejects `.github/workflows`, keep the workflow at `docs/ci/github-actions-ci.yml` until the token has the `workflow` scope, then copy it into place.
 5. Put the one-page PDF path in your resume only after you can explain every bullet.
 
 Do not apply the Terraform roots to a cloud account as part of publishing.
