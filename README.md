@@ -1,2 +1,0 @@
-# certificatee
-my certificatew
